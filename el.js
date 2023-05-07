@@ -16,7 +16,14 @@ var el3 = {
 
 };
 
-
+/**
+ * Converts polar coordinates to Cartesian coordinates.
+ * @param {number} centerX - The x-coordinate of the center of the circle.
+ * @param {number} centerY - The y-coordinate of the center of the circle.
+ * @param {number} radius - The radius of the circle.
+ * @param {number} angleInDegrees - The angle in degrees, measured clockwise from the positive x-axis.
+ * @returns {Object} An object with x and y properties representing the Cartesian coordinates, and a toXY method for formatting the coordinates as a string.
+ */
 el3.util.polarToCartesian = function (centerX, centerY, radius, angleInDegrees) {
 
   var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
@@ -262,3 +269,50 @@ el3.util.make = function(selector, content, styles, optionalNamespace) {
   // Return the new element.
   return newElement;
 }
+
+
+/**
+ * Applies styles from the given style object to the specified HTMLElement.
+ * @param {HTMLElement} element - The HTMLElement to which the styles will be applied.
+ * @param {Object} styleObject - An object containing style assignments in either JS notation or CSS notation.
+ */
+el3.applyStyle = function(element, styleObject) {
+  this.util.applyStylesToElement(element, styleObject);
+};
+
+/**
+ * Removes the specified element from its parent node.
+ * @param {HTMLElement} element - The HTMLElement to be removed.
+ */
+el3.remove = function(element) {
+  if (element && element.parentNode) {
+    element.parentNode.removeChild(element);
+  }
+};
+
+/**
+ * Removes all child nodes of the specified element.
+ * @param {HTMLElement} element - The HTMLElement whose child nodes will be removed.
+ */
+el3.removeAllChildren = function(element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+};
+
+/**
+ * Appends a single HTMLElement or an array of HTMLElements to a specified element.
+ * @param {HTMLElement} element - The HTMLElement to which the content will be appended.
+ * @param {HTMLElement|HTMLElement[]} contentToAppend - A single HTMLElement or an array of HTMLElements to be appended.
+ */
+el3.append = function(element, contentToAppend) {
+  if (contentToAppend instanceof HTMLElement) {
+    element.appendChild(contentToAppend);
+  } else if (Array.isArray(contentToAppend)) {
+    contentToAppend.forEach(function(child) {
+      if (child instanceof HTMLElement) {
+        element.appendChild(child);
+      }
+    });
+  }
+};
