@@ -1,169 +1,138 @@
-# Make - Easy DOM Element Creation Library
+# el3 Library
 
-Make is a lightweight, easy-to-use JavaScript library for creating DOM elements programmatically. With the Make library, you can create elements with tag names, IDs, classes, attributes, content, and styles, as well as specify parent or sibling elements, all with a single function call.
-
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Examples](#examples)
-- [License](#license)
+The `el3` library is a lightweight utility for creating and manipulating HTML, SVG, and MathML elements using CSS-style selectors and JavaScript objects for styles. The library provides an easy-to-use API to create, style, and modify elements, as well as to append them to existing elements in the DOM.
 
 ## Features
 
-- Create DOM elements with a simple function call
-- Specify tag names, IDs, classes, attributes, and styles
-- Set element content (text, HTMLElement, or an array of HTMLElements)
-- Define relationships with parent or sibling elements
-- Easily chain methods for added functionality
-- IE11 compatible
-
-## Installation
-
-Include the `make.js` file in your project to use the Make library:
-
-```html
-<script src="make.js"></script>
-```
+- Create HTML, SVG, and MathML elements with a simple API
+- Apply styles to elements using JavaScript objects
+- Convert polar coordinates to Cartesian coordinates
+- Remove elements from the DOM
+- Remove all child nodes from an element
+- Append elements to other elements
 
 ## Usage
 
-The main function in the Make library is the `make()` function. It takes three arguments:
-
-1. A selector string that defines the element, which can include tag name, ID, classes, attributes, and relationships with existing elements.
-2. The intended content of the element, which can be a string, HTMLElement, or an array of HTMLElements.
-3. An optional object containing CSS style assignments, either in JS notation (e.g., marginLeft) or CSS notation (e.g., margin-left).
-
-### Example
-
-```javascript
-const myElement = make("div#myId.myClass[attr1=value1]", "Hello, world!", {
-  backgroundColor: "blue",
-  "font-size": "16px",
-});
-
-document.body.appendChild(myElement);
-```
-
-This will create the following element and append it to the document body:
+Include the `el3` library in your HTML file:
 
 ```html
-<div id="myId" class="myClass" attr1="value1" style="background-color: blue; font-size: 16px;">Hello, world!</div>
+<script src="path/to/el3.js"></script>
+```
+
+### Creating Elements
+
+Create an element using the `make` method:
+
+```javascript
+var div = el3.make("div");
+```
+
+Create an element with an ID and class using the `make` method:
+
+```javascript
+var div = el3.make("div#my-id.my-class");
+```
+
+Create an element with attributes using the `make` method:
+
+```javascript
+var div = el3.make("div[data-attr=value]");
+```
+
+Create an SVG element using the `draw` method:
+
+```javascript
+var circle = el3.draw("circle");
+```
+
+Create a MathML element using the `math` method:
+
+```javascript
+var math = el3.math("math");
+```
+
+### Applying Styles
+
+Apply styles to an element using the `applyStyle` method:
+
+```javascript
+el3.applyStyle(div, {
+  backgroundColor: "blue",
+  width: "100px",
+  height: "100px"
+});
+```
+
+### Removing Elements
+
+Remove an element from its parent node using the `remove` method:
+
+```javascript
+el3.remove(div);
+```
+
+Remove all child nodes of an element using the `removeAllChildren` method:
+
+```javascript
+el3.removeAllChildren(div);
+```
+
+### Appending Elements
+
+Append a single HTMLElement to a specified element using the `append` method:
+
+```javascript
+el3.append(div, circle);
+```
+
+Append an array of HTMLElements to a specified element using the `append` method:
+
+```javascript
+el3.append(div, [circle, math]);
 ```
 
 ## Examples
 
-Below are a few example use cases for the Make library:
-
-### 1. Create a simple div element
+### Creating and Styling a Div
 
 ```javascript
-const div = make("div");
-```
-
-Result:
-
-```html
-<div></div>
-```
-
-### 2. Create an element with an ID, class, and attribute
-
-```javascript
-const element = make("section#content.lighttheme[accessibility=off]", "Welcome to the content");
-```
-
-Result:
-
-```html
-<section id="content" class="lighttheme" accessibility="off">Welcome to the content</section>
-```
-
-### 3. Create an element with styles
-
-```javascript
-const styledElement = make("div", "Styled element", {
-  backgroundColor: "red",
-  "font-size": "18px",
+var myDiv = el3.make("div#my-id.my-class", "Hello, world!", {
+  backgroundColor: "blue",
+  color: "white",
+  padding: "10px",
+  borderRadius: "5px"
 });
+
+myDiv.appendTo(document.body);
 ```
 
-Result:
-
-```html
-<div style="background-color: red; font-size: 18px;">Styled element</div>
-```
-
-### 4. Create an element with a parent
+### Creating and Styling an SVG Circle
 
 ```javascript
-const parent = make("div#parent");
-const child = make("div#parent > div#child", "Child content");
+var svg = el3.draw("svg", null, {
+  width: "200",
+  height: "200"
+});
 
-document.body.appendChild(parent);
+var circle = el3.draw("circle", null, {
+  cx: "100",
+  cy: "100",
+  r: "50",
+  fill: "red"
+});
+
+el3.append(svg, circle);
+svg.appendTo(document.body);
 ```
 
-Result:
-
-```html
-<div id="parent">
-  <div id="child">Child content</div>
-</div>
-```
-
-### 5. Create an element with a sibling
+### Creating a MathML Element
 
 ```javascript
-const sibling = make("div#sibling", "Sibling content");
-const newElement = make("div#sibling + div#newElement", "New element content");
+var math = el3.math("math");
+var mi = el3.math("mi", "x");
+var mo = el3.math("mo", "=");
+var mn = el3.math("mn", "42");
 
-document.body.appendChild(sibling);
-sibling.insertAdjacentElement("afterend", newElement);
-```
-
-Result:
-
-```html
-<div id="sibling">Sibling content</div>
-<div id="newElement">New element content</div>
-```
-
-### 6. Create an element with nested children
-
-```javascript
-const parent = make("div#parent");
-const child1 = make("div", "Child 1");
-const child2 = make("div", "Child 2");
-
-const children = [child1, child2];
-const nestedParent = make("div#parent", children);
-
-document.body.appendChild(nestedParent);
-```
-
-Result:
-
-```html
-<div id="parent">
-  <div>Child 1</div>
-  <div>Child 2</div>
-</div>
-```
-
-### 7. Create an element and append it to a specified parent
-
-```javascript
-const container = document.getElementById("container");
-const child = make("div.child", "Child content");
-
-child.appendTo(container);
-```
-
-Result (assuming an existing container element):
-
-```html
-<div id="container">
-  <div class="child">Child content</div>
-</div>
+el3.append(math, [mi, mo, mn]);
+math.appendTo(document.body);
 ```
