@@ -19,10 +19,13 @@ function querySelectorPerpetual(selector, options) {
   var target = document.querySelector("body");
 
   var operations = [];
+  var existingElementsInScope = [];
 
   // Add a function to the operations array
   function addOperation(name, func) {
     operations.push({ name: name, func: func });
+    console.log(existingElementsInScope);
+    existingElementsInScope = existingElementsInScope[name](func);
   }
 
   // Apply operations to an element
@@ -61,6 +64,7 @@ function querySelectorPerpetual(selector, options) {
         return;
       }
       element._querySelectorPerpetual = true;
+      existingElementsInScope.push(element);
       applyOperations(element);
     });
   }
