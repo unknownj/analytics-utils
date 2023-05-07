@@ -24,7 +24,6 @@ function querySelectorPerpetual(selector, options) {
   // Add a function to the operations array
   function addOperation(name, func) {
     operations.push({ name: name, func: func });
-    console.log(existingElementsInScope);
     existingElementsInScope = existingElementsInScope[name](func);
   }
 
